@@ -1,0 +1,723 @@
+/*
+/*
+ * CSS aplicacao ATLAS
+ *
+ * Data: 10/07/2014
+ *	
+ * Descricao: CSS padrao da aplicacao ATLAS
+ */
+
+/* ############################################################################################# */
+/* HTML Tag's */
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+/* Login */
+#msgLogin {
+	width: 277px;
+	margin: 30px auto;
+	text-align: center;
+	background: #FFC7C7;
+	border-radius: 5px;
+	color: #B80000;
+	font-size: 11pt;
+	vertical-align: middle;
+	padding: 10px 5px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#obsLogin {
+	font-size: 10px;
+	text-align: justify;
+	color: #305AA3;
+	width: 277px;
+	margin: 25px auto 40px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	line-height: normal;
+}
+
+/* ############################################################################################# */
+/* Classes */
+.login fieldset {
+	border-radius: 15px;
+	width: 277px;
+	height: 110px;
+	border: 2px solid #6c9bc5;
+	text-align: center;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #535457;
+	display: block;
+	margin: 1.0em auto;
+}
+
+.login fieldset div {
+	margin-top: 20px;
+}
+
+.login input[type="text"], input[type="password"] {
+	margin-top: 5px;
+}
+
+.login input[type="submit"] {
+	display: inline-block;
+	background-color: #6296C6;
+	color: #FFFFFF;
+	padding: 5px 30px;
+	text-decoration: none;
+	box-sizing: border-box;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: bolder;
+	border: 0px;
+	border-radius: 5px;
+	position: absolute;
+	margin-top: 5px;
+	position: relative;
+	top: 14px;
+}
+
+.login input[type="submit"]:hover {
+	background-color: #245B8D;
+}
+
+/* ############################################################################################# */
+/* Id's */
+/* Estrutura Template */
+#header {
+	height: 115px;
+}
+
+input[type="text"], input[type="password"] {
+	border: 1px solid #929292;
+	height: 20px;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="button"]:focus,
+	input[type="submit"]:focus {
+	border: 1px solid rgba(14, 50, 156, 0.99);
+}
+
+select {
+	border: 1px solid #929292;
+	height: 24px;
+}
+
+select:focus {
+	border: 1px solid rgba(14, 50, 156, 0.99);
+}
+
+#page {
+	min-height: 100%;
+	position: relative;
+	min-width: 1133px;
+	background: #d8dee3;
+}
+
+#content_pesquisa {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 20px 30px 5px;
+	background: #ffffff;
+	margin-bottom: 20px;
+}
+
+#content_cadastro {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 20px 30px 5px;
+	background: #ffffff;
+	margin-bottom: 20px;
+}
+
+#content_msg {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 20px 30px 5px;
+	background: #ffffff;
+	margin-bottom: 5px;
+}
+
+#footer {
+	width: 100%;
+	text-align: center;
+	height: 10px;
+	background: #253651;
+	padding: 10px 0px 10px 0px;
+	color: #BAC0C1;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+#tituloPagina h1 {
+	margin: 20px 30px 5px;
+	font-family: "Trebushet MS", arial, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #253651;
+	background: #d8dee3;
+}
+
+#pesquisamaior {
+	width: 100%;
+	float: top;
+	display: block;
+}
+
+#cadastromaior {
+	width: 100%;
+	margin: 20px auto;
+	min-width: 600px;
+}
+
+/* Header */
+#headerBanner {
+	background: url('/administrador/resources/images/topo_centro.jpg');
+	height: 64px;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+}
+
+#headerBannerRow {
+	display: table-row;
+}
+
+#bannerDireita {
+	height: 64px;
+	display: table-cell;
+}
+
+#bannerEsquerda {
+	height: 64px;
+	display: table-cell;
+	background: url('/administrador/resources/images/topo_esq.jpg')
+		no-repeat transparent;
+	min-width: 725px;
+	float: left;
+}
+
+#bannerDadosUsuario {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: right;
+	width: 100%;
+	min-width: 300px;
+}
+
+#bannerDadosUsuarioNome {table-row;
+	vertical-align: middle;
+	padding: 0px 20px 0px 0px;
+	text-transform: uppercase;
+	font-family: arial, sans-serif;
+	font-size: 11pt;
+	color: #BAC0C1;
+}
+
+#bannerDadosUsuarioPerfis {table-row;
+	vertical-align: middle;
+	padding: 0px 20px 0px 0px;
+	text-transform: capitalize;
+	font-family: arial, sans-serif;
+	font-size: 8pt;
+	font-weight: bolder;
+	color: #BAC0C1;
+}
+
+#headerMenu {
+	height: 27px;
+	background: #d8dee3;
+	text-align: right;
+	width: 100%;
+	min-width: 1113px;
+}
+
+#headerMenuButtons {
+	position: absolute;
+	text-align: left;
+	margin: 0 25px 0 15px;
+	text-transform: uppercase;
+	width: 90%;
+	min-width: 1000px;
+}
+
+#headerExitButton {
+	text-transform: uppercase;
+	font-weight: bold;
+	height: 22px;
+	padding-top: 6px;
+	width: 100px;
+	text-align: center;
+	float: right;
+}
+
+#headerExitButton a {
+	text-decoration: none;
+	font-family: arial, sans-serif !important;
+	font-size: 13px !important;
+	color: #4a87ba !important;
+	margin-left: 2px;
+}
+
+#headerExitButton img {
+	margin-right: 0px;
+}
+
+/* ############################################################################################# */
+/* Classes */
+.formHeader {
+	width: 80%;
+	font-family: sans-serif;
+	margin: 20px 0 0 10%;
+	display: table;
+}
+
+.formTitulo {
+	color: #0b7827;
+	font-size: 14pt;
+	text-align: left;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+/* ############################################################################################# */
+/* Classes - datagrid */
+.dataTable {
+	font-size: 12px !important;
+	font-family: Verdana, arial, sans-serif;
+	margin-top: 25px;
+}
+
+.dataTable .ui-widget-content .ui-datatable-even {
+	background: #d7dee1;
+}
+
+.dataTable .ui-widget-content .ui-datatable-odd {
+	background: #b4cadf;
+}
+
+.dataTable .ui-state-default {
+	background: #253651;
+	color: #FFFFFF !important;
+	text-shadow: none !important;
+	vertical-align: middle;
+	height: 20px;
+}
+
+.dataTable .ui-paginator {
+	font-size: 10pt;
+	background: #516A83;
+	color: #FFFFFF;
+}
+
+.dataTable .ui-paginator-page {
+	background: #253651 !important;
+	height: 15px;
+}
+
+.dataTable .ui-state-active {
+	background-color: #245B8D !important;
+}
+
+.dataTable .ui-state-default {
+	box-shadow: none;
+}
+
+.dataTable .ui-widget-header {
+	text-shadow: none;
+}
+
+.dataTable .ui-paginator {
+	background: #efefef;
+	border: 1px solid #bdbfbe !important;
+}
+
+.dataTable .ui-paginator-first, .dataTable .ui-paginator-prev,
+	.dataTable .ui-paginator-next, .dataTable .ui-paginator-last,
+	.dataTable ui-paginator-page {
+	background-color: #d7dee1;
+	border: 1px solid #575757;
+	height: 15px;
+}
+
+.dataTable .ui-paginator-pages {
+	height: 15px;
+}
+
+.dataTable .ui-paginator-current {
+	color: #575757;
+	font-size: 11px;
+	background: transparent !important;
+}
+
+.dataTable .ui-paginator-rpp-options {
+	background: transparent;
+	color: #575757 !important;
+	height: 20px;
+	border-bottom: 0px none;
+	min-width: 50px;
+}
+
+.dataTable .ui-widget-header {
+	border: 0px;
+}
+
+.dataTablePesquisa {
+	width: 100%;
+}
+
+.dataTableVisualizar {
+	background: url("/administrador/resources/images/view.png") !important;
+	border: 0px !important;
+	height: 24px !important;
+	width: 24px !important;
+	margin-left: 0px !important;
+}
+
+.dataTableEditar {
+	background: url("/administrador/resources/images/edit.png") !important;
+	border: 0px !important;
+	height: 24px !important;
+	width: 24px !important;
+	margin-left: 0px !important;
+}
+
+.dataTableExcluir {
+	background: url("/administrador/resources/images/delete.png") !important;
+	border: 0px !important;
+	height: 24px !important;
+	width: 21px !important;
+	margin-left: 0px !important;
+}
+
+/** cadastro **/
+.form {
+	font-size: 11pt;
+	font-family: Verdana, Helvetica, sans-serif;
+	color: #666666;
+	display: block;
+}
+
+.form a {
+	text-decorator: none;
+	border: 0px;
+}
+
+.form label {
+	font-family: Verdana, Helvetica, sans-serif;
+	display: block;
+	font-size: 10pt;
+	padding: 10px 0px 5px 0px;
+}
+
+.form input[type="text"] {
+	margin: 0px 10px 5px 0px;
+	height: 25px;
+}
+
+.form .ui-selectonemenu-label {
+	min-width: 100px;
+	height: 20px;
+	padding: 10px 0px 4px 4px;
+}
+
+/** form panel  **/
+.form fieldset {
+	border: 1px solid #abc1c9;
+	margin: 10px auto;
+	padding: 10px 20px 20px 20px;
+}
+
+.form img {
+	border: 0px;
+}
+
+.formRow {
+	min-height: 45px;
+	text-align: left;
+}
+
+.formColumn {
+	display: inline-block;
+	padding: 0px 20px 0px 0px;
+	vertical-align: top;
+}
+
+.formColumnButton {
+	display: inline-block;
+	padding: 15px 10px 0px 0px;
+	vertical-align: middle;
+}
+
+.formCadastroSuperior {
+	margin: 5px 0px 20px 0px;
+	display: table;
+	width: 100%;
+}
+
+.formCadastroTitulo {
+	font-size: 16px;
+	width: 80%;
+	float: left;
+	color: #253651 !important;
+	font-weight: bolder;
+}
+
+.formCadastroNovo {
+	float: right;
+	background: url("/administrador/resources/images/adicionar.png")
+		no-repeat !important;
+	height: 20px;
+	width: 20px;
+	border: 0px !important;
+}
+
+.formPesquisaAlterar {
+	background: url("/administrador/resources/images/alterar.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formPesquisaExcluir {
+	background: url("/administrador/resources/images/remover.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	border: 0px !important;
+}
+
+.formPesquisaVisualizar {
+	background: url("/administrador/resources/images/visualizar.png")
+		no-repeat !important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formPesquisaBloquearUsuario {
+	background: url("/administrador/resources/images/unlock.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formPesquisaDesbloquearUsuario {
+	background: url("/administrador/resources/images/lock.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formPesquisaDesativar {
+	background: url("/administrador/resources/images/inativo.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formPesquisaAtivar {
+	background: url("/administrador/resources/images/ativo.png") no-repeat
+		!important;
+	height: 20px;
+	width: 20px;
+	margin-right: 5px !important;
+	border: 0px !important;
+}
+
+.formActions {
+	text-align: center;
+	margin: 20px auto 5px;
+}
+
+.formActionsButtons {
+	background: #253651 !important;
+	color: #FFF !important;
+	padding: 5px 0px !important;
+	min-width: 100px !important;
+	margin: 7px 10px 0px 0px !important;
+	text-decoration: none !important;
+	box-sizing: border-box !important;
+	font-family: Helvetica, Arial, sans-serif !important;
+	font-size: 10pt !important;
+	font-weight: bolder !important;
+	border: 0px !important;
+	border-radius: 5px !important;
+	text-shadow: none !important;
+}
+
+.formActionsButtons:hover {
+	background: #245B8D !important;
+}
+
+.formActionsButtons:disabled {
+	background: #808080 !important;
+}
+
+.messages {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.fatalMsg {
+	list-style-type: none;
+	border: 2px solid rgb(175, 3, 17);
+	padding: 10px;
+	color: rgb(95, 0, 8);
+	background: rgb(255, 208, 208);
+	font-size: 10pt;
+	font-weight: bolder;
+	margin: 5px 0px 10px 0px;
+}
+
+.errorMsg {
+	list-style-type: none;
+	border: 1px solid rgb(175, 24, 11);
+	padding: 10px;
+	color: rgb(177, 17, 3);
+	background: rgb(255, 241, 232);
+	font-size: 10pt;
+	font-weight: bolder;
+	margin: 5px 0px 10px 0px;
+}
+
+.warnMsg {
+	list-style-type: none;
+	border: 1px solid rgb(226, 147, 47);
+	padding: 10px;
+	color: rgb(238, 95, 50);
+	background: rgb(255, 255, 232);
+	font-size: 10pt;
+	font-weight: bolder;
+	margin: 5px 0px 10px 0px;
+}
+
+.infoMsg {
+	list-style-type: none;
+	border: 1px solid rgb(0, 54, 104);
+	padding: 10px;
+	color: rgb(0, 48, 100);
+	background: rgb(234, 242, 255);
+	font-size: 10pt;
+	font-weight: bolder;
+	margin: 5px 0px 10px 0px;
+}
+
+/* confirm message */
+.confirmDialog {
+	width: 400px !important;
+	top: 30% !important;
+	left: 37% !important;
+}
+
+.confirmDialog .ui-dialog-titlebar {
+	background: #113E6A;
+	color: #FFFFFF;
+	text-shadow: none;
+	font-size: 12pt;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	text-align: center;
+}
+
+.confirmDialog .ui-confirm-dialog-message {
+	font-size: 12pt;
+}
+
+.confirmDialog input[type="button"], .confirmDialog input[type="submit"]
+	{
+	background-color: #6C9BC5;
+	color: #FFF;
+	padding: 5px 0px;
+	min-width: 100px;
+	margin: 3px 10px 0px 0px;
+	text-decoration: none;
+	box-sizing: border-box;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+	font-weight: bolder;
+	border: 0px;
+	border-radius: 5px;
+}
+
+.confirmDialog input[type="button"]:focus, .confirmDialog input[type="submit"]:focus
+	{
+	border: 0px;
+	border-radius: 5px;
+}
+
+.confirmDialog input[type="button"]:hover, .confirmDialog input[type="submit"]:hover
+	{
+	background-color: #245B8D;
+}
+
+.errorPageMessage {
+	margin: 150px auto 0px;
+	width: 25%;
+	text-align: center;
+}
+
+.errorPageMessageMain {
+	font-size: 18pt;
+	font-weight: bolder;
+	color: #E00303;
+	display: table;
+	vertical-align: middle;
+}
+
+.errorPageMessageMainIcon {
+	display: table-cell;
+	width: 70px;
+	vertical-align: middle;
+}
+
+.errorPageMessageMainMsg {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.errorPageMessageDetails {
+	font-size: 11pt;
+}
+
+.ui-picklist .ui-picklist-list {
+	width: 450px !important;
+}
+
+.ui-picklist-filter .ui-inputfield .ui-inputtext {
+	width: 450px !important;
+}
+
+/* ############################################################################################# */
+/* Primefaces Components Override */
+.ui-menu {
+	background: transparent;
+	font-size: 13px;
+	height: 25px;
+	border: 0px;
+	padding: 0px !important;
+}
+
+.ui-menuitem-text {
+	color: #2383AD;
+	font-weight: bolder;
+	margin: -2px 0 0 0;
+}
+
+.ui-menuitem-active .ui-menuitem-text {
+	color: #004080;
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+	
+	<security-domain flushOnSessionInvalidation="true">AdminLogon
+	</security-domain>
+
+	<context-root>/administrador</context-root>
+
+	<!-- grupo -->
+	<ejb-ref>
+		<ejb-ref-name>grupoBean</ejb-ref-name>
+		<jndi-name>java:global/admin/admin-ejb/GrupoBean!br.com.flexsolutions.admin.facade.interfaces.IGrupoBeanLocal
+		</jndi-name>
+	</ejb-ref>
+
+	<!-- grupoRole -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>grupoRoleBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/GrupoRoleBean!br.com.flexsolutions.admin.facade.interfaces.IGrupoRoleBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+	
+	<!-- Log -->
+	<!-- Pessoa -->
+
+	<!-- Role -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>rolesBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/RolesBean!br.com.flexsolutions.admin.facade.interfaces.IRolesBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+
+	<!-- Sistema -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>sistemaBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/SistemaBean!br.com.flexsolutions.admin.facade.interfaces.ISistemaBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+
+	<!-- TelaMenu -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>telaMenuBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/TelaMenuBean!br.com.flexsolutions.admin.facade.interfaces.ITelaMenuBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+
+	<!-- TelaMenuGrupo -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>telaMenuGrupoBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/TelaMenuGrupoBean!br.com.flexsolutions.admin.facade.interfaces.ITelaMenuGrupoBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+	
+	<!-- usuario -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>usuarioBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/UsuarioBean!br.com.flexsolutions.admin.facade.interfaces.IUsuarioBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+
+	<!-- usuarioGrupo -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>usuarioGrupoBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/UsuarioGrupoBean!br.com.flexsolutions.admin.facade.interfaces.IUsuarioGrupoBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+
+	<!-- usuarioSistema -->
+<!-- 	<ejb-ref> -->
+<!-- 		<ejb-ref-name>usuarioSistemaBean</ejb-ref-name> -->
+<!-- 		<jndi-name>java:global/admin/admin-ejb/UsuarioSistemaBean!br.com.flexsolutions.admin.facade.interfaces.IUsuarioSistemaBeanLocal -->
+<!-- 		</jndi-name> -->
+<!-- 	</ejb-ref> -->
+	
+	<!-- usuarioSistemaGrupo -->
+
+</jboss-web>

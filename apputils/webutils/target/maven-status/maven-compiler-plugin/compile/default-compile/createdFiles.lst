@@ -1,0 +1,6 @@
+br\com\flexsolutions\webutils\control\SessionMB.class
+br\com\flexsolutions\webutils\control\UsuarioMB.class
+br\com\flexsolutions\webutils\control\MenuMB.class
+br\com\flexsolutions\webutils\phaselistener\SessionTimeoutPhaseListener.class
+br\com\flexsolutions\webutils\control\BaseMB.class
+br\com\flexsolutions\webutils\control\LogoutMB.class

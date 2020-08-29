@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+	<h:form id="frmHeader" prependId="false">
+
+		<!-- Banner Aplicacao e Dados Usuario -->
+
+		<div id="headerBanner">
+			<div id="headerBannerRow">
+				<!-- Banner Direita -->
+				<div id="bannerEsquerda">
+					<h:graphicImage id="bannerEsquerdaImg" library="images"
+						name="topo_esq.jpg" />
+				</div>
+				<div id="bannerDadosUsuario">
+					<div id="bannerDadosUsuarioNome">
+						<h:outputText value="#{usuarioMB.usuario.usuNome}"
+							rendered="#{usuarioMB.usuario != null}" />
+					</div>
+					<div id="bannerDadosUsuarioPerfis">
+						<h:outputText value="#{usuarioMB.gruposUsuarioToString}"
+							rendered="#{usuarioMB.usuario != null}" />
+					</div>
+				</div>
+				<!-- Banner Esquerda -->
+				<div id="bannerDireita">
+					<h:graphicImage id="bannerDireitaImg" library="images"
+						name="topo_dir.jpg" />
+				</div>
+			</div>
+		</div>
+
+		<!-- Menu -->
+		<div id="headerMenu">
+			<div id="headerMenuButtons">
+				<p:menubar model="#{menuMB.barraMenu}" />
+			</div>
+			<div id="headerExitButton">
+				<h:commandLink value="#{bundle['bt.sair']}"
+					actionListener="#{logoutMB.executeLogout}" />
+			</div>
+		</div>
+
+
+	</h:form>
+</composite:implementation>
+</html>

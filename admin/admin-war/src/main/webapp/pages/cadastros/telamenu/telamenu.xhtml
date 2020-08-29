@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['telamenu.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{telaMenuMB.stackTrace}" closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<p:focus for=":frmPesquisa:somPesqSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+				<!-- Area de Pesquisa - Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<p:outputLabel id="oplPesqSistema"
+						value="#{bundle['telamenu.tela.pesquisar.selectsistema']}" />
+					<p:selectOneMenu id="somPesqSistema"
+						value="#{telaMenuMB.viewBean.sistemaSelecionado.sisId}"
+						label="#{bundle['telamenu.tela.pesquisar.selectsistema']}"
+						style="width: 160px;">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{telaMenuMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<!-- Area de Pesquisa -->
+				<h:panelGroup id="pngPesquisa" layout="block"
+					styleClass="formColumn">
+					<p:outputLabel id="oplPesq"
+						value="#{bundle['telamenu.tela.pesquisar.inputpesquisa']}" />
+					<p:inputText id="iptPesquisa"
+						value="#{telaMenuMB.viewBean.stringPesquisa}" maxlength="50"
+						style="width:400px" />
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:iptPesquisa :frmPesquisa:somPesqSistema"
+						actionListener="#{telaMenuMB.pesquisar()}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaTelaMenu" var="tme"
+					value="#{telaMenuMB.viewBean.telaMenuDataModel}"
+					styleClass="dataTable" paginator="true"
+					rowsPerPageTemplate="10,20,30" rows="10" lazy="true"
+					emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:5%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{tme.tmeId}
+						</p:column>
+
+					<p:column style="width:9%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.sistema']}
+							</f:facet>
+							#{tme.tmeSistemaTO.sisNome}
+						</p:column>
+
+					<!-- legenda -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.legenda']}
+							</f:facet>
+							#{tme.tmeLegenda}
+						</p:column>
+
+					<!-- acao -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.acao']}
+							</f:facet>
+							#{tme.tmeAcao}
+						</p:column>
+
+					<!--  nivel -->
+					<p:column style="width:5%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.nivel']}
+							</f:facet>
+							#{tme.tmeNivel}
+						</p:column>
+					<!-- ordem -->
+					<p:column style="width:5%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.ordem']}
+							</f:facet>
+							#{tme.tmeOrdem}
+						</p:column>
+
+					<p:column style="width:8%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.camada']}
+							</f:facet>
+							#{tme.tmeCamada}
+						</p:column>
+
+
+
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenu.tela.pesquisar.dt.telamenu']}
+							</f:facet>
+							#{tme.tmeMenuSuperior.tmeLegenda}
+						</p:column>
+
+					<!-- Acoes -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['telamenu.tela.pesquisar.dt.acoes']}
+							</f:facet>
+						<p:commandButton styleClass="formPesquisaVisualizar"
+							title="#{bundle['telamenu.tela.pesquisar.dt.visualizarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.telaMenuTO}" value="#{tme}" />
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.habilitarEdicao}" value="false" />
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.habilitarVisualizacao}"
+								value="true" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaAlterar"
+							title="#{bundle['telamenu.tela.pesquisar.dt.alterarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.telaMenuTO}" value="#{tme}" />
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.habilitarEdicao}" value="true" />
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.habilitarVisualizacao}"
+								value="false" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['telamenu.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{configuracaoRegionalMB.viewBean.habilitarEdicao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{telaMenuMB.viewBean.telaMenuTO}" value="#{tme}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:somSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['telamenu.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['telamenu.tela.cadastro.novoregistro']}"
+						actionListener="#{telaMenuMB.novoCadastro()}"
+						update=":frmMessages :frmCadastro" value="" />
+				</h:panelGroup>
+
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSistema"
+						value="#{bundle['telamenu.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somSistema"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeSistemaTO.sisId}"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}"
+						label="#{bundle['telamenu.tela.cadastro.label.sistema']}"
+						style="width: 160px;" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{telaMenuMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				<br />
+
+				<!-- ID -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCodigo"
+						value="#{bundle['telamenu.tela.cadastro.label.codigo']}" />
+					<p:inputText id="iptCodigo"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeId}"
+						style="width: 30px;" disabled="true"
+						label="#{bundle['telamenu.tela.cadastro.label.codigo']}" />
+				</h:panelGroup>
+
+				<!-- legenda  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplLegenda"
+						value="#{bundle['telamenu.tela.cadastro.label.legenda']}" />
+					<p:inputText id="iptLegenda"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeLegenda}"
+						style="width: 400px;" maxlength="50"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['telamenu.tela.cadastro.label.legenda']}" />
+				</h:panelGroup>
+
+				<!-- acao  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplAcao"
+						value="#{bundle['telamenu.tela.cadastro.label.acao']}" />
+					<p:inputText id="iptAcao"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeAcao}"
+						style="min-width: 640px;" maxlength="80" required="true"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}"
+						label="#{bundle['telamenu.tela.cadastro.label.acao']}" />
+				</h:panelGroup>
+				<!-- nivel  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplNivel"
+						value="#{bundle['telamenu.tela.cadastro.label.nivel']}" />
+					<p:inputMask mask="9" id="iptNivel"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeNivel}"
+						style="min-width: 30px;" type=""
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['telamenu.tela.cadastro.label.nivel']}" />
+				</h:panelGroup>
+
+				<!-- ordem  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplOrdem"
+						value="#{bundle['telamenu.tela.cadastro.label.ordem']}" />
+					<p:inputMask mask="9" id="iptOrdem"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeOrdem}"
+						style="min-width: 30px;" type=""
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['telamenu.tela.cadastro.label.ordem']}" />
+				</h:panelGroup>
+
+				<!-- camada  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCamada"
+						value="#{bundle['telamenu.tela.cadastro.label.camada']}" />
+					<p:inputText id="iptCamada"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeCamada}"
+						style="min-width: 100px;"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['telamenu.tela.cadastro.label.camada']}" />
+				</h:panelGroup>
+
+				<!--Tela menu pai -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplTelaPai"
+						value="#{bundle['telamenu.tela.cadastro.label.telamenu']}" />
+					<p:selectOneMenu id="somTelaPai"
+						value="#{telaMenuMB.viewBean.telaMenuTO.tmeMenuSuperior.tmeId}"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}"
+						style="width: 400px;">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true"
+							disabled="#{!telaMenuMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{telaMenuMB.viewBean.listaTelaMenuTO}"
+							var="telaMenu" itemLabel="#{telaMenu.tmeLegenda}"
+							itemValue="#{telaMenu.tmeId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}"
+						rendered="#{!telaMenuMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa :frmCadastro" />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!telaMenuMB.viewBean.habilitarEdicao}"
+						rendered="#{!telaMenuMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="telamenu-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

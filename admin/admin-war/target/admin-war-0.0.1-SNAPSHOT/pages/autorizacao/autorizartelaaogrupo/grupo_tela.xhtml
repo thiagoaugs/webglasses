@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['telamenugrupo.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{telaMenuGrupoMB.stackTrace}"
+				closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplPesqSistema"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somPesqSistema"
+						value="#{telaMenuGrupoMB.viewBean.sistemaSelecionado.sisId}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.sistema']}"
+						style="width:160px">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{telaMenuGrupoMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+						<f:ajax listener="#{telaMenuGrupoMB.carregarCombosPesq}"
+							render=":frmPesquisa:pgPesqGrupo :frmPesquisa:pgPesqTela" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<!-- grupos -->
+				<h:panelGroup id="pgPesqGrupo" layout="block"
+					styleClass="formColumn">
+					<h:outputLabel id="oplPesqGrupo"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.grupo']}" />
+					<p:selectOneMenu id="somPesqGrupo"
+						value="#{telaMenuGrupoMB.viewBean.grupoSelecionado.gpoId}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.grupo']}"
+						style="width:400px">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{telaMenuGrupoMB.viewBean.listaPesqGrupoTO}" var="grupo"
+							itemLabel="#{grupo.gpoNome}" itemValue="#{grupo.gpoId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+
+
+				<!-- TelaMenu -->
+				<h:panelGroup id="pgPesqTela" layout="block" styleClass="formColumn">
+					<h:outputLabel id="opPesqTela"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.tela']}" />
+					<p:selectOneMenu id="somPesqTela"
+						value="#{telaMenuGrupoMB.viewBean.telaMenuSelecionada.tmeId}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.tela']}"
+						style="width:400px">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{telaMenuGrupoMB.viewBean.listaPesqTelaMenuTO}" var="tme"
+							itemLabel="#{tme.tmeLegenda}" itemValue="#{tme.tmeId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:somPesqSistema :frmPesquisa:somPesqGrupo :frmPesquisa:somPesqTela"
+						actionListener="#{telaMenuGrupoMB.pesquisar}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+
+
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaGrupo" var="tmg"
+					value="#{telaMenuGrupoMB.viewBean.tmgDataModel}"
+					styleClass="dataTable" paginator="true"
+					rowsPerPageTemplate="10,20,30" rows="10" lazy="true"
+					emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenugrupo.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{tmg.tmgId}
+						</p:column>
+
+					<!-- sistema -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenugrupo.tela.pesquisar.dt.sistema']}
+							</f:facet>
+							#{tmg.tmgGrupo.gpoSistemaTO.sisNome}
+						</p:column>
+
+					<!-- grupo -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenugrupo.tela.pesquisar.dt.grupo']}
+							</f:facet>
+							#{tmg.tmgGrupo.gpoNome}
+						</p:column>
+
+					<!-- tela -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['telamenugrupo.tela.pesquisar.dt.telamenu']}
+							</f:facet>
+							#{tmg.tmgTelaMenu.tmeLegenda}
+						</p:column>
+
+					<!-- Acoes -->
+					<p:column
+						style="width:17%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['telamenugrupo.tela.pesquisar.dt.acoes']}
+							</f:facet>
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['telamenugrupo.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{telaMenuGrupoMB.viewBean.habilitarVisualizacao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{telaMenuGrupoMB.viewBean.tmgTO}" value="#{tmg}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:somSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['telamenugrupo.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['telamenugrupo.tela.cadastro.novoregistro']}"
+						actionListener="#{telaMenuGrupoMB.novoCadastro()}"
+						update=":frmMessages  :frmCadastro" value="" />
+				</h:panelGroup>
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSistema"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somSistema"
+						value="#{telaMenuGrupoMB.viewBean.tmgTO.tmgGrupo.gpoSistemaTO.sisId}"
+						disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.sistema']}"
+						style="width:160px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true"
+							disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{telaMenuGrupoMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+						<f:ajax listener="#{telaMenuGrupoMB.carregarCombos}"
+							render=":frmCadastro:pgGrupo " />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				<br />
+
+
+				<!-- ID -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCodigo"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.codigo']}" />
+					<p:inputText id="iptCodigo"
+						value="#{telaMenuGrupoMB.viewBean.tmgTO.tmgId}"
+						style="width: 30px;" disabled="true"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.codigo']}" />
+				</h:panelGroup>
+
+				<!-- grupos -->
+				<h:panelGroup id="pgGrupo" layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplGrupo"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.grupo']}" />
+					<p:selectOneMenu id="somGrupo"
+						value="#{telaMenuGrupoMB.viewBean.tmgTO.tmgGrupo.gpoId}"
+						disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.grupo']}"
+						style="width:400px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{telaMenuGrupoMB.viewBean.listaGrupoTO}"
+							var="grupo" itemLabel="#{grupo.gpoNome}"
+							itemValue="#{grupo.gpoId}" />
+						<f:ajax listener="#{telaMenuGrupoMB.carregarListaTelaMenu}"
+							render=":frmCadastro:pgTela" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+
+
+				<!-- TelaMenu -->
+				<h:panelGroup id="pgTela" layout="block" styleClass="formColumn">
+					<h:outputLabel id="opTela"
+						value="#{bundle['telamenugrupo.tela.cadastro.label.tela']}" />
+					<p:selectOneMenu id="somTela"
+						value="#{telaMenuGrupoMB.viewBean.tmgTO.tmgTelaMenu.tmeId}"
+						disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}"
+						label="#{bundle['telamenugrupo.tela.cadastro.label.tela']}"
+						style="width:400px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true"
+							disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{telaMenuGrupoMB.viewBean.listaTelaMenuTO}"
+							var="tme" itemLabel="#{tme.tmeLegenda}" itemValue="#{tme.tmeId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}"
+						rendered="#{!telaMenuGrupoMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa :frmCadastro" />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!telaMenuGrupoMB.viewBean.habilitarEdicao}"
+						rendered="#{!telaMenuGrupoMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="grupo_tela-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,6 @@
+br\com\flexsolutions\menuutils\exception\MenuException.class
+br\com\flexsolutions\menuutils\exception\SystemNameNotFoundException.class
+br\com\flexsolutions\menuutils\PrimefacesMenuBarGenerator.class
+br\com\flexsolutions\menuutils\MenuBarGenerator.class
+br\com\flexsolutions\menuutils\GenericMenuBar.class
+br\com\flexsolutions\menuutils\PersonalizedMenuGenerator.class

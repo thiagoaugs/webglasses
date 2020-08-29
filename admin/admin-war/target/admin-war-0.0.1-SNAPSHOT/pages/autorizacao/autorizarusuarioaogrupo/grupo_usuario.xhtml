@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['usuariogrupo.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{usuarioGrupoMB.stackTrace}" closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+				<!--Sistema -->
+				<h:panelGroup id="pgPesqSistema" layout="block"
+					styleClass="formColumn">
+					<h:outputLabel id="oplPesqSistema"
+						value="#{bundle['usuariogrupo.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somPesqSistema"
+						value="#{usuarioGrupoMB.viewBean.sistemaSelecionado.sisId}"
+						label="#{bundle['usuariogrupo.tela.cadastro.label.sistema']}"
+						style="width:160px">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{usuarioGrupoMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+						<f:ajax listener="#{usuarioGrupoMB.carregarCombosPesq}"
+							render=":frmPesquisa:pgPesqGrupo frmPesquisa:pgPesqUsuarios" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<!-- grupos -->
+				<h:panelGroup id="pgPesqGrupo" layout="block"
+					styleClass="formColumn">
+					<h:outputLabel id="oplPesqGrupo"
+						value="#{bundle['usuariogrupo.tela.cadastro.label.grupo']}" />
+					<p:selectOneMenu id="somPesqGrupo"
+						value="#{usuarioGrupoMB.viewBean.grupoPesqSelecionado.gpoId}"
+						label="#{bundle['usuariogrupo.tela.cadastro.label.grupo']}"
+						style="width:400px">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{usuarioGrupoMB.viewBean.listaPesqGrupoTO}"
+							var="grupo" itemLabel="#{grupo.gpoNome}"
+							itemValue="#{grupo.gpoId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<h:panelGroup id="pgPesqUsuarios" layout="block"
+					styleClass="formColumn">
+					<h:outputLabel id="oplPesqDescricao"
+						value="#{bundle['usuariosistema.tela.pesquisar.busca.usuario']}" />
+
+					<p:inputText id="iptPesquisa" maxlength="50"
+						style="min-width: 400px;"
+						value="#{usuarioGrupoMB.viewBean.pesqUsuario}">
+					</p:inputText>
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:pgPesqSistema :frmPesquisa:pgPesqGrupo :frmPesquisa:pgPesqUsuarios"
+						actionListener="#{usuarioGrupoMB.pesquisar}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaUsuarioGrupo" var="usg"
+					value="#{usuarioGrupoMB.viewBean.usuarioGrupoDataModel}"
+					styleClass="dataTable" paginator="true"
+					rowsPerPageTemplate="10,20,30" rows="10" lazy="true"
+					emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariogrupo.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{usg.usgId}
+						</p:column>
+
+					<!-- sistema -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariogrupo.tela.pesquisar.dt.sistema']}
+							</f:facet>
+							#{usg.usgUsuarioSistema.usiSistema.sisNome}
+						</p:column>
+
+					<!-- grupo -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariogrupo.tela.pesquisar.dt.grupo']}
+							</f:facet>
+							#{usg.usgGrupo.gpoNome}
+						</p:column>
+
+
+					<!-- usuario -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariogrupo.tela.pesquisar.dt.usuario']}
+							</f:facet>
+							#{usg.usgUsuarioSistema.usiUsuario.usuNome}
+						</p:column>
+
+					<!-- Acoes -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['usuariogrupo.tela.pesquisar.dt.acoes']}
+							</f:facet>
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['usuariogrupo.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{usuarioGrupoMB.viewBean.habilitarVisualizacao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+
+							<f:setPropertyActionListener
+								target="#{usuarioGrupoMB.viewBean.usuarioSistemaGrupoTO}"
+								value="#{usg}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:somSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['usuariogrupo.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['usuariogrupo.tela.cadastro.novoregistro']}"
+						actionListener="#{usuarioGrupoMB.novoCadastro()}"
+						update=":frmMessages  :frmCadastro" value="" process="@this" />
+				</h:panelGroup>
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSistema"
+						value="#{bundle['usuariogrupo.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somSistema"
+						value="#{usuarioGrupoMB.viewBean.sistemaSelecionado.sisId}"
+						disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuariogrupo.tela.cadastro.label.sistema']}"
+						style="width:160px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{usuarioGrupoMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+						<f:ajax listener="#{usuarioGrupoMB.carregarCombos}"
+							render=":frmCadastro:pgGrupo " />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<p:tooltip for="oplSistema" value="Favor selecionar um sistema!"
+					showEffect="clip" hideEffect="explode" trackMouse="true" />
+
+				<!-- grupos -->
+				<h:panelGroup id="pgGrupo" layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplGrupo"
+						value="#{bundle['usuariogrupo.tela.cadastro.label.grupo']}" />
+					<p:selectOneMenu id="somGrupo"
+						value="#{usuarioGrupoMB.viewBean.grupoSelecionado.gpoId}"
+						disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuariogrupo.tela.cadastro.label.grupo']}"
+						style="width:400px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{usuarioGrupoMB.viewBean.listaGrupoTO}"
+							var="grupo" itemLabel="#{grupo.gpoNome}"
+							itemValue="#{grupo.gpoId}" />
+						<f:ajax listener="#{usuarioGrupoMB.carregarListaUsuario}"
+							render="frmCadastro:pgUsuarios" />
+					</p:selectOneMenu>
+
+				</h:panelGroup>
+				<br />
+
+
+				<h:panelGroup id="pgUsuarios" layout="block" styleClass="formColumn">
+					<h:outputLabel id="selUsuarios"
+						value="#{bundle['usuariogrupo.tela.cadastro.label.usuario']}" />
+
+					<!-- lista de usuarios para selecionar os que acessaram o ssitema selecionado -->
+					<p:pickList id="pickList"
+						label="#{bundle['usuariogrupo.tela.cadastro.label.usuario']}"
+						value="#{usuarioGrupoMB.viewBean.usuariosSistema}" var="usi"
+						disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}"
+						itemLabel="#{usi}" itemValue="#{usi}"
+						converter="usuarioSistemaConverter"
+						addAllLabel="Adicionar todos Usuários" required="true"
+						addLabel="Adionar Selecionado" removeLabel="Remover Usuário"
+						removeAllLabel="Remover todos Usuários" showSourceFilter="true"
+						showTargetFilter="true" filterMatchMode="contains">
+
+						<f:facet name="sourceCaption"
+							disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}">Usuário(s)</f:facet>
+						<f:facet name="targetCaption"
+							disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}">Autorizado(s) ao sistema</f:facet>
+
+						<p:column style="width:75%;">
+							<h:outputText value="#{usi.usiUsuario.usuNome}" />
+						</p:column>
+
+
+					</p:pickList>
+				</h:panelGroup>
+
+				<p:tooltip for="selUsuarios"
+					value="Favor selecionar os usuários que terão acesso ao sistema selecionado!"
+					showEffect="clip" hideEffect="explode" trackMouse="true" />
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}"
+						rendered="#{!usuarioGrupoMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa " />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!usuarioGrupoMB.viewBean.habilitarEdicao}"
+						rendered="#{!usuarioGrupoMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="grupo_usuario-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

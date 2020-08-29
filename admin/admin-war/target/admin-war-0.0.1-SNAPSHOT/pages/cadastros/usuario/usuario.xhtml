@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['usuario.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{userMB.stackTrace}" closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<p:focus for=":frmPesquisa:iptPesquisa" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+				<!-- Area de Pesquisa -->
+				<h:panelGroup id="pngPesquisa" layout="block">
+					<label> #{bundle['usuario.tela.pesquisar.inputpesquisa']} </label>
+					<p:inputText id="iptPesquisa"
+						value="#{userMB.viewBean.stringPesquisa}" maxlength="80"
+						style="width:640px" />
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:iptPesquisa"
+						actionListener="#{userMB.pesquisar()}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaTelaMenu" var="usu"
+					value="#{userMB.viewBean.usuarioDataModel}" styleClass="dataTable"
+					paginator="true" rowsPerPageTemplate="10,20,30" rows="10"
+					lazy="true" emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:5%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{usu.usuId}
+						</p:column>
+
+					<!-- CPF -->
+					<p:column style="width:10%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.cpf']}
+							</f:facet>
+							#{usu.usuCpf}
+						</p:column>
+
+					<!-- Nome -->
+					<p:column style="width:16%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.nome']}
+							</f:facet>
+							#{usu.usuNome}
+						</p:column>
+					<!-- Login -->
+					<p:column style="width:10%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.login']}
+							</f:facet>
+							#{usu.usuLogin}
+						</p:column>
+
+
+					<!-- Bloqueado -->
+					<p:column style="width:5%;vertical-align:middle;text-align:center;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.bloqueado']}
+							</f:facet>
+
+						<p:commandButton styleClass="formPesquisaDesbloquearUsuario"
+							title="#{bundle['usuario.tela.pesquisar.dt.title.desbloquear']}"
+							onclick="PF('cfdDesbloqUsuario').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro"
+							rendered="#{usu.usuBloq}">
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.usuarioTO}" value="#{usu}" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaBloquearUsuario"
+							title="#{bundle['usuario.tela.pesquisar.dt.title.bloquear']}"
+							onclick="PF('cfdBloqUsuario').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro"
+							rendered="#{not usu.usuBloq}">
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.usuarioTO}" value="#{usu}" />
+						</p:commandButton>
+
+
+					</p:column>
+
+					<!-- email -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.email']}
+							</f:facet>
+							#{usu.usuEmail}
+						</p:column>
+
+					<!-- celular -->
+					<p:column style="width:10%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuario.tela.pesquisar.dt.celular']}
+							</f:facet>
+							#{usu.usuCelular}
+						</p:column>
+
+					<!-- Acoes -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['usuario.tela.pesquisar.dt.acoes']}
+							</f:facet>
+						<p:commandButton styleClass="formPesquisaVisualizar"
+							title="#{bundle['usuario.tela.pesquisar.dt.visualizarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.usuarioTO}" value="#{usu}" />
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.habilitarEdicao}" value="false" />
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.habilitarVisualizacao}" value="true" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaAlterar"
+							title="#{bundle['usuario.tela.pesquisar.dt.alterarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.usuarioTO}" value="#{usu}" />
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.habilitarEdicao}" value="true" />
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.habilitarVisualizacao}" value="false" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['usuario.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{configuracaoRegionalMB.viewBean.habilitarEdicao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{userMB.viewBean.usuarioTO}" value="#{usu}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:iptCpf" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['usuario.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['usuario.tela.cadastro.novoregistro']}"
+						actionListener="#{userMB.novoCadastro()}"
+						update=":frmMessages :frmCadastro" value="" />
+				</h:panelGroup>
+
+				<!-- ID -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCodigo"
+						value="#{bundle['usuario.tela.cadastro.label.codigo']}" />
+					<p:inputText id="iptCodigo"
+						value="#{userMB.viewBean.usuarioTO.usuId}" style="width: 30px;"
+						disabled="true"
+						label="#{bundle['usuario.tela.cadastro.label.codigo']}" />
+				</h:panelGroup>
+
+				<!-- cpf -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCpf"
+						value="#{bundle['usuario.tela.cadastro.label.cpf']}" />
+					<p:inputMask id="iptCpf" mask="999.999.999-99" size="11"
+						style="width: 120px;" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}" type="mask"
+						label="#{bundle['usuario.tela.cadastro.label.cpf']}"
+						value="#{userMB.viewBean.usuarioTO.usuCpf}" />
+
+				</h:panelGroup>
+
+				<!-- nome -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplNome"
+						value="#{bundle['usuario.tela.cadastro.label.nome']}" />
+					<p:inputText id="iptNome"
+						value="#{userMB.viewBean.usuarioTO.usuNome}" style="width: 640px;"
+						maxlength="80" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.nome']}" />
+				</h:panelGroup>
+
+				<!-- login -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplLogin"
+						value="#{bundle['usuario.tela.cadastro.label.login']}" />
+					<p:inputText id="iptLogin"
+						value="#{userMB.viewBean.usuarioTO.usuLogin}"
+						style="min-width: 120px;" maxlength="15" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.login']}" />
+				</h:panelGroup>
+				<!-- senha -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSenha"
+						value="#{bundle['usuario.tela.cadastro.label.senha']}" />
+					<p:inputText id="iptSenha"
+						value="#{userMB.viewBean.usuarioTO.usuSenha}"
+						style="min-width: 120px;" maxlength="15" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.senha']}" />
+				</h:panelGroup>
+
+
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplBloq"
+						value="#{bundle['usuario.tela.cadastro.label.bloqueado']}" />
+					<p:selectBooleanCheckbox id="iptBloq"
+						value="#{userMB.viewBean.usuarioTO.usuBloq}"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.bloqueado']}" />
+				</h:panelGroup>
+
+
+
+				<!-- datacad -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplDtCad"
+						value="#{bundle['usuario.tela.cadastro.label.datacad']}" />
+					<p:inputText id="iptDtCad"
+						value="#{userMB.viewBean.usuarioTO.usuDtCad}"
+						style="width: 100px;" disabled="true"
+						label="#{bundle['usuario.tela.cadastro.label.datacad']}" />
+				</h:panelGroup>
+
+				<!-- dataalt -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplDtAlt"
+						value="#{bundle['usuario.tela.cadastro.label.dataalt']}" />
+					<p:inputText id="iptDtAlt"
+						value="#{userMB.viewBean.usuarioTO.usuDtAlt}"
+						style="width: 100px;" disabled="true"
+						label="#{bundle['usuario.tela.cadastro.label.dataalt']}" />
+				</h:panelGroup>
+
+				<br />
+				<!-- email -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplEmail"
+						value="#{bundle['usuario.tela.cadastro.label.email']}" />
+					<p:inputText id="iptEmail"
+						value="#{userMB.viewBean.usuarioTO.usuEmail}"
+						style="min-width: 640px;" maxlength="80" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.email']}" />
+				</h:panelGroup>
+
+				<!-- telefone -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplTelefone"
+						value="#{bundle['usuario.tela.cadastro.label.telefone']}" />
+
+					<p:inputMask id="iptTelefone" mask="(99)99999999?9" size="10"
+						style="min-width: 88px;"
+						disabled="#{!userMB.viewBean.habilitarEdicao}" type="mask"
+						label="#{bundle['usuario.tela.cadastro.label.telefone']}"
+						value="#{userMB.viewBean.usuarioTO.usuTelefone}" />
+
+				</h:panelGroup>
+
+				<!-- ramal -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplRamal"
+						value="#{bundle['usuario.tela.cadastro.label.ramal']}" />
+					<p:inputText id="iptRamal"
+						value="#{userMB.viewBean.usuarioTO.usuRamal}" style="width: 40px;"
+						maxlength="4" disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.ramal']}" />
+				</h:panelGroup>
+
+				<!-- celular -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCelular"
+						value="#{bundle['usuario.tela.cadastro.label.celular']}" />
+					<p:inputMask id="iptCelular" mask="(99)99999999?9" size="10"
+						style="min-width: 88px;" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}" type="mask"
+						label="#{bundle['usuario.tela.cadastro.label.celular']}"
+						value="#{userMB.viewBean.usuarioTO.usuCelular}" />
+
+				</h:panelGroup>
+				<br />
+
+				<!-- cep -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCep"
+						value="#{bundle['usuario.tela.cadastro.label.cep']}" />
+
+					<p:inputMask id="iptCep" mask="99.999-999" size="11"
+						style="width: 88px;" required="true"
+						disabled="#{!userMB.viewBean.habilitarEdicao}" type="mask"
+						label="#{bundle['usuario.tela.cadastro.label.cep']}"
+						value="#{userMB.viewBean.usuarioTO.usuCep}" />
+				</h:panelGroup>
+				<!-- rua -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplRua"
+						value="#{bundle['usuario.tela.cadastro.label.rua']}" />
+					<p:inputText id="iptRua" required="true"
+						value="#{userMB.viewBean.usuarioTO.usuRua}"
+						style="min-width: 400px;" maxlength="50"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.rua']}" />
+				</h:panelGroup>
+				<!-- bairro -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplBairro"
+						value="#{bundle['usuario.tela.cadastro.label.bairro']}" />
+					<p:inputText id="iptBairro" required="true"
+						value="#{userMB.viewBean.usuarioTO.usuBairro}"
+						style="min-width: 400px;" maxlength="50"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.bairro']}" />
+				</h:panelGroup>
+
+				<!-- numero -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplNumero"
+						value="#{bundle['usuario.tela.cadastro.label.numero']}" />
+					<p:inputText id="iptNumero" required="true"
+						value="#{userMB.viewBean.usuarioTO.usuNumero}"
+						style="width: 40px;" maxlength="4"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.numero']}" />
+				</h:panelGroup>
+				<!-- complemento -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplComp"
+						value="#{bundle['usuario.tela.cadastro.label.complemento']}" />
+					<p:inputText id="iptComp"
+						value="#{userMB.viewBean.usuarioTO.usuComplemento}"
+						style="min-width: 640px;" maxlength="80"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuario.tela.cadastro.label.complemento']}" />
+				</h:panelGroup>
+
+
+
+
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						rendered="#{!userMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa :frmCadastro" />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!userMB.viewBean.habilitarEdicao}"
+						rendered="#{!userMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="usuario-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

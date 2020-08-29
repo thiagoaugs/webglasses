@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<composite:interface>
+		<composite:attribute name="stackTrace" required="false" />
+	</composite:interface>
+	
+	<composite:implementation>
+		<h:outputStylesheet library="css" name="webutils.css"/>
+		
+		<!-- Messages -->
+		<div>
+			<h:messages infoClass="messagesInfo" errorClass="messageError" warnClass="messageWarning" />
+		</div>
+		
+		<!-- Detalhes (stacktrace) -->
+		<h:panelGroup id="pngStackTrace" layout="block" rendered="#{cc.attrs.stackTrace ne null and not empty cc.attrs.stackTrace}">
+			<a id="" type="button" class="btDetalhes" href="#" onclick="hideElements('divStack')">
+				#{bundle['bt.detalhes']}
+			</a>
+			<div id="divStack">
+				<a href="#" onclick="closeElements('divStack')" type="button" style="float: right;">
+					#{bundle['bt.fechar']}
+				</a><br />
+				#{cc.attrs.stackTrace}
+			</div>
+		</h:panelGroup>
+	</composite:implementation>
+</html>

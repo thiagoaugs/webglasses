@@ -1,0 +1,173 @@
+/**  
+ * admin-ejb - SistemaDAOJpa.java
+ * 
+ * Data de criacao 03/08/2020
+ *
+ * Criado por Thiago Augusto
+ * 
+ * Copyright flexsolutions - Todos os direitos reservados.
+ *
+ */
+package br.com.flexsolutions.admin.dao.jpa;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import br.com.flexsolutions.admin.dao.SistemaDAO;
+import br.com.flexsolutions.persistenceutils.dao.generics.impl.GenericDAOJpa;
+import br.com.flexsolutions.security.pojo.Sistema;
+import br.com.flexsolutions.security.pojo.Sistema_;
+
+/**
+ * @author Thiago Augusto
+ *
+ */
+public class SistemaDAOJpa extends GenericDAOJpa<Sistema, Serializable>
+		implements SistemaDAO {
+
+	public SistemaDAOJpa() {
+		super();
+	}
+
+	public SistemaDAOJpa(EntityManager em) {
+		super(em);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.com.flexsolutions.admin.dao.SistemaDAO#retornarCount(java.lang.String)
+	 */
+	@Override
+	public Long retornarCount(String textoPesquisa) {
+		// Se textoPesquisa nao informado, atribuir vazio para fazer o count de
+		// todos os registros
+		if (textoPesquisa == null) {
+			textoPesquisa = "";
+		}
+
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+		Root<Sistema> root = cq.from(Sistema.class);
+
+		// RETORNO (Fields)
+		cq.select(cb.count(root.get(Sistema_.sisId)));
+
+		// WHERE
+		Predicate predicate = cb.disjunction();
+
+		// descricao do grupo
+		predicate = cb.or(
+				predicate,
+				cb.like(cb.lower(root.get(Sistema_.sisNome)), "%"
+						+ textoPesquisa.toLowerCase() + "%"));
+
+		cq.where(predicate);
+
+		// Execucao SELECT
+		TypedQuery<Long> tq = entityManager.createQuery(cq);
+		return tq.getSingleResult();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.com.flexsolutions.admin.dao.SistemaDAO#listarPag(java.lang.String,
+	 * java.lang.Integer, java.lang.Integer)
+	 */
+	@Override
+	public List<Sistema> filtrarPag(String textoPesquisa, Integer firstResult,
+			Integer maxResults) {
+
+		// Se textoPesquisa nao informado, atribuir vazio para fazer o count de
+		// todos os registros
+		if (textoPesquisa == null) {
+			textoPesquisa = "";
+		}
+
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Sistema> cq = cb.createQuery(Sistema.class);
+
+		// FROM e JOIN's
+		Root<Sistema> root = cq.from(Sistema.class);
+
+		// WHERE
+		Predicate predicate = cb.disjunction();
+
+		// descricao do grupo
+		predicate = cb.or(cb.like(cb.lower(root.get(Sistema_.sisNome)), "%"
+				+ textoPesquisa.toLowerCase() + "%"));
+
+		cq.where(predicate);
+		cq.orderBy(cb.asc(root.get(Sistema_.sisId)));
+
+		// Execucao SELECT
+		TypedQuery<Sistema> tq = entityManager.createQuery(cq);
+
+		if (maxResults != null && maxResults.intValue() > 0) {
+			tq.setMaxResults(maxResults);
+
+			if (firstResult != null && firstResult.intValue() > 0) {
+				tq.setFirstResult(firstResult);
+			}
+		}
+
+		return tq.getResultList();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.com.flexsolutions.admin.dao.SistemaDAO#buscarPor(java.lang.String)
+	 */
+	@Override
+	public Sistema buscarPor(String nome) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Sistema> cq = cb.createQuery(Sistema.class);
+
+		// FROM e JOIN's
+		Root<Sistema> root = cq.from(Sistema.class);
+
+		// Extensao do tipo arquivo digital
+		Predicate predicate = cb.equal(cb.upper(root.get(Sistema_.sisNome)),
+				nome.toUpperCase());
+
+		// WHERE
+		cq.where(predicate);
+		// Execucao SELECT
+		TypedQuery<Sistema> tq = entityManager.createQuery(cq);
+		return tq.getSingleResult();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.com.flexsolutions.admin.dao.SistemaDAO#listar()
+	 */
+	@Override
+	public List<Sistema> listar() {
+
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Sistema> cq = cb.createQuery(Sistema.class);
+
+		// FROM e JOIN's
+		Root<Sistema> root = cq.from(Sistema.class);
+
+		cq.orderBy(cb.asc(root.get(Sistema_.sisId)));
+
+		// Execucao SELECT
+		TypedQuery<Sistema> tq = entityManager.createQuery(cq);
+
+		return tq.getResultList();
+	}
+
+}

@@ -1,0 +1,70 @@
+/*
+ * CSS do modulo webutils
+ *
+ * Data: 16/07/2014
+ *	
+ * Descricao: CSS para o modulo webutils da aplicacao .
+ */
+
+/* ############################################################################################# */
+/* HTML Tag's */
+body {
+	font-family: "Trebuchet MS";
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	min-height: 600px;
+}
+
+/* ############################################################################################# */
+/* Classes */
+.messagesInfo {
+	background: #0080ff;
+	color: #000000;
+	font-family: arial, sans-seriff;
+	font-size: 15px;
+}
+
+.messagesWarning {
+	background: #ff8040;
+	color: #000000;
+	font-family: arial, sans-seriff;
+	font-size: 15px;
+}
+
+.messagesError {
+	background: #ff8080;
+	color: #000000;
+	font-family: arial, sans-seriff;
+	font-size: 15px;
+}
+
+.errorPageMessage {
+	margin: 150px auto 0px;
+	width: 25%;
+	text-align: center;
+}
+
+.errorPageMessageMain {
+	font-size: 18pt;
+	font-weight: bolder;
+	color: #E00303;
+	display: table;
+	vertical-align: middle;
+}
+
+.errorPageMessageMainIcon {
+	display: table-cell;
+	width: 70px;
+	vertical-align: middle;
+	padding-top: 5px;
+}
+
+.errorPageMessageMainMsg {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.errorPageMessageDetails {
+	font-size: 11pt;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/resources/templates/webglass_template.xhtml">
+
+	<ui:define name="mensagens">
+		<h:form id="frmMessages">
+			<div class="errorPageMessage">
+				<div class="errorPageMessageMain">
+					<div class="errorPageMessageMainIcon">
+						<h:graphicImage library="images" name="error.png" />
+					</div>
+					<div class="errorPageMessageMainMsg">
+						<h:outputText value="#{bundle['403.mensagem.principal']}" />
+					</div>
+				</div>
+				<div class="errorPageMessageDetails">
+					<h:outputText value="#{bundle['403.mensagem.acao']}" />
+					<br /> [
+					<h:commandLink value="#{bundle['403.mensagem.voltar']}"
+						actionListener="#{logoutMB.executeLogout}" />
+					]
+					
+					<br />
+					<br />
+					<br />
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

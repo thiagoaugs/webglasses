@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['roles.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{rolesMB.stackTrace}" closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<p:focus for=":frmPesquisa:somPesqSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+
+				<!-- Area de Pesquisa - Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<p:outputLabel id="oplPesqSistema"
+						value="#{bundle['roles.tela.pesquisar.selectsistema']}" />
+
+					<p:selectOneMenu id="somPesqSistema"
+						value="#{rolesMB.viewBean.sistemaSelecionado.sisId}"
+						label="#{bundle['roles.tela.pesquisar.selectsistema']}"
+						style="width: 160px;">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{rolesMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<!-- Area de Pesquisa -->
+				<h:panelGroup id="pngPesquisa" layout="block"
+					styleClass="formColumn">
+					<label> #{bundle['roles.tela.pesquisar.inputpesquisa']} </label>
+					<p:inputText id="iptPesquisa"
+						value="#{rolesMB.viewBean.stringPesquisa}" maxlength="20"
+						style="width:160px" />
+				</h:panelGroup>
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:iptPesquisa :frmPesquisa:somPesqSistema"
+						actionListener="#{rolesMB.pesquisar()}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaRoles" var="rol"
+					value="#{rolesMB.viewBean.rolesDataModel}" styleClass="dataTable"
+					paginator="true" rowsPerPageTemplate="10,20,30" rows="10"
+					lazy="true" emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['roles.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{rol.rolId}
+						</p:column>
+
+					<!-- sistema -->
+					<p:column style="width:12%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['roles.tela.pesquisar.dt.sistema']}
+							</f:facet>
+							#{rol.rolSistemaTO.sisNome}
+						</p:column>
+
+
+					<!-- nome -->
+					<p:column style="width:15%;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['roles.tela.pesquisar.dt.nome']}
+							</f:facet>
+							#{rol.rolNome}
+						</p:column>
+
+					<!-- Descricao -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['roles.tela.pesquisar.dt.descricao']}
+							</f:facet>
+							#{rol.rolDescricao}
+						</p:column>
+
+
+
+					<!-- ativo -->
+					<p:column style="width:8%;vertical-align:middle;text-align:center;">
+						<f:facet name="header">
+									#{bundle['roles.tela.pesquisar.dt.ativo']}
+							</f:facet>
+
+						<p:commandButton styleClass="formPesquisaAtivar"
+							title="#{bundle['roles.tela.pesquisar.dt.title.desativar']}"
+							onclick="PF('cfdAtiva').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro"
+							rendered="#{rol.rolAtivo}">
+							<f:setPropertyActionListener target="#{rolesMB.viewBean.rolesTO}"
+								value="#{rol}" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaDesativar"
+							title="#{bundle['roles.tela.pesquisar.dt.title.ativar']}"
+							onclick="PF('cfdDesativa').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro"
+							rendered="#{not rol.rolAtivo}">
+							<f:setPropertyActionListener target="#{rolesMB.viewBean.rolesTO}"
+								value="#{rol}" />
+						</p:commandButton>
+
+
+					</p:column>
+
+					<!-- Acoes -->
+					<p:column
+						style="width:17%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['roles.tela.pesquisar.dt.acoes']}
+							</f:facet>
+
+						<p:commandButton styleClass="formPesquisaVisualizar"
+							title="#{bundle['roles.tela.pesquisar.dt.visualizarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener target="#{rolesMB.viewBean.rolesTO}"
+								value="#{rol}" />
+							<f:setPropertyActionListener
+								target="#{rolesMB.viewBean.habilitarEdicao}" value="false" />
+							<f:setPropertyActionListener
+								target="#{rolesMB.viewBean.habilitarVisualizacao}" value="true" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaAlterar"
+							title="#{bundle['roles.tela.pesquisar.dt.alterarregistro']}"
+							value="" update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener target="#{rolesMB.viewBean.rolesTO}"
+								value="#{rol}" />
+							<f:setPropertyActionListener
+								target="#{rolesMB.viewBean.habilitarEdicao}" value="true" />
+							<f:setPropertyActionListener
+								target="#{rolesMB.viewBean.habilitarVisualizacao}" value="false" />
+						</p:commandButton>
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['roles.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{configuracaoRegionalMB.viewBean.habilitarEdicao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener target="#{rolesMB.viewBean.rolesTO}"
+								value="#{rol}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:somSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['roles.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['roles.tela.cadastro.novoregistro']}"
+						actionListener="#{rolesMB.novoCadastro()}"
+						update=":frmMessages :frmCadastro" value="" />
+				</h:panelGroup>
+
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSistema"
+						value="#{bundle['roles.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somSistema" style="width: 160px;"
+						required="true"
+						value="#{rolesMB.viewBean.rolesTO.rolSistemaTO.sisId}"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}"
+						label="#{bundle['roles.tela.cadastro.label.sistema']}">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true"
+							disabled="#{!rolesMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{rolesMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				<br />
+
+				<!-- ID -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplCodigo"
+						value="#{bundle['roles.tela.cadastro.label.codigo']}" />
+					<p:inputText id="iptCodigo"
+						value="#{rolesMB.viewBean.rolesTO.rolId}" style="width: 40px;"
+						disabled="true"
+						label="#{bundle['roles.tela.cadastro.label.codigo']}" />
+				</h:panelGroup>
+
+				<!-- nome -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplNome"
+						value="#{bundle['roles.tela.cadastro.label.nome']}" />
+					<p:inputText id="iptNome" maxlength="20"
+						value="#{rolesMB.viewBean.rolesTO.rolNome}" style="width: 160px;"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['roles.tela.cadastro.label.nome']}" />
+				</h:panelGroup>
+
+				<!-- Descricao -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplDescricao"
+						value="#{bundle['roles.tela.cadastro.label.descricao']}" />
+					<p:inputText id="iptDescricao" maxlength="50"
+						value="#{rolesMB.viewBean.rolesTO.rolDescricao}"
+						style="width: 400px;"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}" required="true"
+						label="#{bundle['roles.tela.cadastro.label.descricao']}" />
+				</h:panelGroup>
+
+				<!-- ativo -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplAtivo"
+						value="#{bundle['roles.tela.cadastro.label.ativo']}" />
+
+					<p:selectBooleanCheckbox
+						value="#{rolesMB.viewBean.rolesTO.rolAtivo}"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}" />
+				</h:panelGroup>
+
+
+
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}"
+						rendered="#{!rolesMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa :frmCadastro" />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!rolesMB.viewBean.habilitarEdicao}"
+						rendered="#{!rolesMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="regras-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

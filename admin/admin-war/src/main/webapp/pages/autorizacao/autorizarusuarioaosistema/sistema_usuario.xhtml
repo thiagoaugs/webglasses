@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<ui:composition template="/resources/templates/template_cad_maior.xhtml">
+	<!-- Titulo da Pagina -->
+	<ui:define name="tituloPagina">
+		<h1>#{bundle['usuariosistema.tela.title']}</h1>
+	</ui:define>
+
+	<!-- Mensagens -->
+	<ui:define name="mensagens">
+		<h:form id="frmMessages" prependId="false">
+			<p:messages stackTrace="#{usuarioSistemaMB.stackTrace}"
+				closable="true">
+				<p:effect type="pulsate" event="load" delay="500" />
+			</p:messages>
+		</h:form>
+	</ui:define>
+
+	<!-- Pesquisa -->
+	<ui:define name="pesquisamaior">
+		<h:form id="frmPesquisa" styleClass="form">
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">#{bundle['pesquisar.title']}</div>
+				</h:panelGroup>
+
+
+				<!-- Area de Pesquisa - Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<p:outputLabel id="oplPesqSistema"
+						value="#{bundle['usuariosistema.tela.pesquisar.busca.sistema']}" />
+					<p:selectOneMenu id="somPesqSistema"
+						value="#{usuarioSistemaMB.viewBean.sistemaSelecionado.sisId}"
+						label="#{bundle['usuariosistema.tela.pesquisar.busca.sistema']}"
+						style="width: 160px;">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}" />
+						<f:selectItems value="#{usuarioSistemaMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<!-- Area de Pesquisa - nome usuario  -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplPesqDescricao"
+						value="#{bundle['usuariosistema.tela.pesquisar.busca.usuario']}" />
+
+					<p:inputText id="iptPesquisa" maxlength="50"
+						style="min-width: 400px;"
+						value="#{usuarioSistemaMB.viewBean.pesquisa}">
+					</p:inputText>
+				</h:panelGroup>
+
+
+				<h:panelGroup layout="block" styleClass="formActions">
+					<p:commandButton value="#{bundle['bt.pesquisar']}"
+						styleClass="formActionsButtons"
+						process="@this :frmPesquisa:somPesqSistema :frmPesquisa:iptPesquisa"
+						actionListener="#{usuarioSistemaMB.pesquisar}"
+						update=":frmMessages :frmPesquisa :frmCadastro"
+						title="#{bundle['bt.pesquisar']}" />
+				</h:panelGroup>
+
+
+				<!-- Resultados da Pesquisa -->
+				<p:dataTable id="dtListaGrupo" var="usi"
+					value="#{usuarioSistemaMB.viewBean.usuarioSistemaDataModel}"
+					styleClass="dataTable" paginator="true"
+					rowsPerPageTemplate="10,20,30" rows="10" lazy="true"
+					emptyMessage="#{bundle['table.registros']}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom">
+
+					<!-- Codigo -->
+					<p:column style="width:8%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariosistema.tela.pesquisar.dt.codigo']}
+							</f:facet>
+							#{usi.usiId}
+						</p:column>
+
+					<!-- sistema -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariosistema.tela.pesquisar.dt.sistema']}
+							</f:facet>
+							#{usi.usiSistema.sisNome}
+						</p:column>
+
+					<!-- usuario -->
+					<p:column style="vertical-align:middle;">
+						<f:facet name="header">
+									#{bundle['usuariosistema.tela.pesquisar.dt.usuario']}
+							</f:facet>
+							#{usi.usiUsuario.usuNome}
+						</p:column>
+
+					<!-- Acoes -->
+					<p:column
+						style="width:17%;text-align:center;vertical-align:middle;">
+						<f:facet name="header">
+								#{bundle['usuariosistema.tela.pesquisar.dt.acoes']}
+							</f:facet>
+
+
+						<p:commandButton styleClass="formPesquisaExcluir"
+							title="#{bundle['usuariosistema.tela.pesquisar.dt.removerregistro']}"
+							disabled="#{usuarioSistemaMB.viewBean.habilitarVisualizacao}"
+							onclick="PF('cfdExcluirCadastro').show();" value=""
+							update=":frmMessages :frmPesquisa :frmCadastro">
+							<f:setPropertyActionListener
+								target="#{usuarioSistemaMB.viewBean.usuarioSistemaTO}"
+								value="#{usi}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+
+	<!-- Cadastro -->
+	<ui:define name="cadastromaior">
+		<h:form id="frmCadastro" styleClass="form">
+			<p:focus for=":frmCadastro:somSistema" />
+			<fieldset>
+
+				<!-- Titulo Cadastro e Add Button -->
+				<h:panelGroup layout="block" styleClass="formCadastroSuperior">
+					<div class="formCadastroTitulo">
+						#{bundle['usuariosistema.tela.cadastro.title']}</div>
+					<p:commandButton styleClass="formCadastroNovo"
+						title="#{bundle['usuariosistema.tela.cadastro.novoregistro']}"
+						actionListener="#{usuarioSistemaMB.novoCadastro()}"
+						update=":frmMessages  :frmCadastro" value="" process="@this" />
+				</h:panelGroup>
+
+				<!--Sistema -->
+				<h:panelGroup layout="block" styleClass="formColumn">
+					<h:outputLabel id="oplSistema"
+						value="#{bundle['usuariosistema.tela.cadastro.label.sistema']}" />
+					<p:selectOneMenu id="somSistema"
+						value="#{usuarioSistemaMB.viewBean.sistemaSelecionado.sisId}"
+						disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}"
+						label="#{bundle['usuariosistema.tela.cadastro.label.sistema']}"
+						style="width:160px" required="true">
+						<f:selectItem itemValue=""
+							itemLabel="#{bundle['option.selecione']}"
+							noSelectionOption="true"
+							disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}" />
+						<f:selectItems value="#{usuarioSistemaMB.viewBean.listaSistemaTO}"
+							var="sistema" itemLabel="#{sistema.sisNome}"
+							itemValue="#{sistema.sisId}" />
+
+						<f:ajax listener="#{usuarioSistemaMB.carregarCombos}"
+							render="frmCadastro:pgUsuarios" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+				<p:tooltip for="oplSistema" value="Favor selecionar um sistema!"
+					showEffect="clip" hideEffect="explode" trackMouse="true" />
+
+				<h:panelGroup id="pgUsuarios" layout="block" styleClass="formColumn">
+					<h:outputLabel id="selUsuarios"
+						value="#{bundle['usuariosistema.tela.cadastro.label.usuario']}" />
+
+					<!-- lista de usuarios para selecionar os que acessaram o ssitema selecionado -->
+					<p:pickList id="pickList"
+						label="#{bundle['usuariosistema.tela.cadastro.label.usuario']}"
+						value="#{usuarioSistemaMB.viewBean.usuarios}" var="usu"
+						disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}"
+						itemLabel="#{usu}" itemValue="#{usu}" converter="usuarioConverter"
+						addAllLabel="Adicionar todos Usuários" required="true"
+						addLabel="Adionar Selecionado" removeLabel="Remover Usuário"
+						removeAllLabel="Remover todos Usuários" showSourceFilter="true"
+						showTargetFilter="true" filterMatchMode="contains">
+
+						<f:facet name="sourceCaption"
+							disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}">Usuário(s)</f:facet>
+						<f:facet name="targetCaption"
+							disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}">Autorizado(s) ao sistema</f:facet>
+						<p:column style="width:75%;">
+							<h:outputText value="#{usu.usuNome}" />
+						</p:column>
+
+					</p:pickList>
+				</h:panelGroup>
+
+				<p:tooltip for="selUsuarios"
+					value="Favor selecionar os usuários que terão acesso ao sistema selecionado!"
+					showEffect="clip" hideEffect="explode" trackMouse="true" />
+
+
+
+
+				<!-- Actions -->
+				<h:panelGroup layout="block" styleClass="formActions">
+
+					<!-- Salvar -->
+					<p:commandButton id="btnSalvar" value="#{bundle['bt.salvar']}"
+						disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}"
+						rendered="#{!usuarioSistemaMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						oncomplete="(!args.validationFailed) ? PF('cfdSalvarCadastro').show() : PF('cfdSalvarCadastro').hide()"
+						update=":frmMessages :frmPesquisa :frmCadastro" />
+
+					<!-- Cancelar -->
+					<p:commandButton id="btnCancelar" value="#{bundle['bt.cancelar']}"
+						disabled="#{!usuarioSistemaMB.viewBean.habilitarEdicao}"
+						rendered="#{!usuarioSistemaMB.viewBean.habilitarVisualizacao}"
+						styleClass="formActionsButtons"
+						onclick="PF('cfdCancelarCadastro').show();" />
+				</h:panelGroup>
+			</fieldset>
+		</h:form>
+
+		<!-- Dialogs -->
+		<ui:include src="sistema_usuario-dlgs.xhtml" />
+	</ui:define>
+</ui:composition>
+</html>

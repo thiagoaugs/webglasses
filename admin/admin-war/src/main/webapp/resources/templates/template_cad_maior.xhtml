@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sp="http://java.sun.com/jsf/composite/systemcomp">
+
+<h:head>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico" />
+
+	<h:outputStylesheet library="css" name="reset.css" />
+	<h:outputStylesheet library="css" name="flexsolutions.css" />
+
+	<h:outputScript library="js" name="flexsolutions.js" />
+	<h:outputScript library="js" name="web.js" />
+
+</h:head>
+
+<h:body>
+	<div id="page">
+		<div id="header">
+			<ui:insert name="header">
+				<sp:header id="headerComp" />
+			</ui:insert>
+		</div>
+		<div id="content_msg">
+			<div id="mensagens">
+				<ui:insert name="mensagens" />
+			</div>
+		</div>
+
+
+		<div id="tituloPagina">
+			<ui:insert name="tituloPagina" />
+		</div>
+
+
+		<div id="content_pesquisa">
+			<div id="pesquisamaior">
+				<ui:insert name="pesquisamaior" />
+			</div>
+		</div>
+
+		<div id="content_cadastro">
+			<div id="cadastromaior">
+				<ui:insert name="cadastromaior" />
+			</div>
+		</div>
+
+		<div id="footer">
+			<ui:insert name="footer">
+				<sp:footer />
+			</ui:insert>
+		</div>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+		<h:form id="frmDialogs" prependId="false">
+			<!-- Confirm Dialog Salvar Cadastro -->
+			<p:confirmDialog id="cfdSalvarCadastro" widgetVar="cfdSalvarCadastro"
+				closable="false" header="#{bundle['genercicdialogs.tela.header']}"
+				closeOnEscape="false"
+				message="#{bundle['genercicdialogs.tela.salvarcadastro.msg']}"
+				styleClass="confirmDialog">
+
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.sim']}"
+					onclick="PF('cfdSalvarCadastro').hide();"
+					actionListener="#{grupoRoleMB.salvarGrupoRole()}"
+					update=":frmMessages :frmPesquisa :frmCadastro" />
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.nao']}"
+					onclick="PF('cfdSalvarCadastro').hide();" />
+			</p:confirmDialog>
+
+			<!-- Confirm Dialog Cancelar Cadastro -->
+			<p:confirmDialog id="cfdCancelarCadastro"
+				widgetVar="cfdCancelarCadastro" closable="false"
+				header="#{bundle['genercicdialogs.tela.header']}"
+				closeOnEscape="false"
+				message="#{bundle['genercicdialogs.tela.cancelarcadastro.msg']}"
+				styleClass="confirmDialog">
+
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.sim']}"
+					onclick="PF('cfdCancelarCadastro').hide();"
+					actionListener="#{grupoRoleMB.cancelarCadastro()}"
+					update=":frmMessages :frmCadastro :frmPesquisa" />
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.nao']}"
+					onclick="PF('cfdCancelarCadastro').hide();" />
+			</p:confirmDialog>
+
+			<!-- Confirm Dialog Excluir Cadastro -->
+			<p:confirmDialog id="cfdExcluirCadastro"
+				widgetVar="cfdExcluirCadastro" closable="false"
+				header="#{bundle['genercicdialogs.tela.header']}"
+				closeOnEscape="false"
+				message="#{bundle['genercicdialogs.tela.excluircadastro.msg']}"
+				styleClass="confirmDialog">
+
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.sim']}"
+					onclick="PF('cfdExcluirCadastro').hide();"
+					update=":frmMessages :frmPesquisa :frmCadastro"
+					actionListener="#{grupoRoleMB.excluir()}" />
+				<p:commandButton styleClass="formActionsButtons"
+					value="#{bundle['bt.nao']}"
+					onclick="PF('cfdExcluirCadastro').hide();" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:composition>
+</body>
+</html>

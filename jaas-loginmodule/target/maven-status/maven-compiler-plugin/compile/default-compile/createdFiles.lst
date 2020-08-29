@@ -1,0 +1,4 @@
+br\com\flexsolutions\security\Principals\UserPrincipal.class
+br\com\flexsolutions\security\Principals\RolePrincipal.class
+br\com\flexsolutions\security\Principals\AdminLogon.class
+br\com\flexsolutions\security\Principals\GroupPrincipal.class

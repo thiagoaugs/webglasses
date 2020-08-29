@@ -1,0 +1,6 @@
+br\com\flexsolutions\persistenceutils\dao\generics\impl\GenericDAOJpa.class
+br\com\flexsolutions\persistenceutils\exception\ConstraintViolationException.class
+br\com\flexsolutions\persistenceutils\exception\PersistenceException.class
+br\com\flexsolutions\persistenceutils\utils\EntityUtils.class
+br\com\flexsolutions\persistenceutils\utils\SQLUtils.class
+br\com\flexsolutions\persistenceutils\dao\generics\GenericDAO.class

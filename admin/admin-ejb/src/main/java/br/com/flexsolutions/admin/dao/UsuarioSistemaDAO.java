@@ -1,0 +1,84 @@
+/**  
+ * jass-ejb - UsuarioSistemaDAO.java
+ * 
+ * Data de criacao 03/08/2020
+ *
+ * Criado por Thiago Augusto
+ * 
+ * Copyright flexsolutions - Todos os direitos reservados.
+ *
+ */
+package br.com.flexsolutions.admin.dao;
+
+import java.io.Serializable;
+import java.util.List;
+
+import br.com.flexsolutions.persistenceutils.dao.generics.GenericDAO;
+import br.com.flexsolutions.security.pojo.UsuarioSistema;
+
+/**
+ * Interface para implementar os metodos para manipulacao na tabela tipo_usuario
+ * 
+ * @author Thiago Augusto
+ * 
+ */
+public interface UsuarioSistemaDAO extends
+		GenericDAO<UsuarioSistema, Serializable> {
+
+	/**
+	 * Faz o count da pesquisa de listarPag, para utilizacao no lazy loading.
+	 * 
+	 * @param {@link textoPesquisa} Texto da pesquisa que pode ser nome.
+	 * @return {@link Long } Quantidade de registros localizados na pesquisa.
+	 */
+	public Long retornarCount(String nomeUsuario, Integer idSistema);
+
+	/**
+	 * Retorna a lista de usuarios localizados, baseando-se no texto da
+	 * pesquisa, campo nome.
+	 * 
+	 * @param {@link idUsuario} Id do usuario.
+	 * @param {@link idSistema} Id do sistema.
+	 * @param {@link firstResult} Inicio da pesquisa no bd.
+	 * @param {@link maxResults} Quantidade maxima de resultadoss
+	 * @return {@link List<UsuarioSistema> } lista UsuarioSistema localizadas
+	 */
+	public List<UsuarioSistema> filtrarPag(String nomeUsuario,
+			Integer idSistema, Integer firstResult, Integer maxResults);
+
+	/**
+	 * * Busca por login do usuario para verificar se ja existe o login passado
+	 * por parametro
+	 * 
+	 * @param {@link idUsuario} Id do usuario.
+	 * @param {@link idSistema} Id do sistema.
+	 * @return {@link Boolean}
+	 */
+	UsuarioSistema buscarPor(Integer idUsuario, Integer idSistema);
+
+	/**
+	 * Lista todos os usuarios com o sistema selecionado
+	 * 
+	 * @param {@link dSistema}
+	 * @return {@link List<Usuario> } lista Usuario localizadas
+	 */
+	public List<UsuarioSistema> listarPorSistema(Integer idSistema);
+
+	/**
+	 * Metodo que recebe um id de sistema e retorna todos os usuariossistema q
+	 * possuem relacionamento com este id
+	 * 
+	 * @param {@Link idSistema}
+	 * @return {@link List<UsuarioSistema>}
+	 */
+	public List<UsuarioSistema> listarIdUsuariosPorSistema(Integer idSistema);
+
+	/**
+	 * Retorna todos os usuarios do banco que nao estao configurados
+	 * 
+	 * @return {@link List<UsuarioSistema> } lista Usuario localizadas
+	 */
+	public List<UsuarioSistema> listarUsuariosNaoConfigurados(
+			List<Integer> listaUsuariosJaCadastrados, Integer idSistema);
+
+}
